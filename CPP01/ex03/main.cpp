@@ -6,7 +6,7 @@
 /*   By: syee <syee@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/22 15:49:31 by syee              #+#    #+#             */
-/*   Updated: 2026/10/22 23:00:44 by syee             ###   ########.fr       */
+/*   Updated: 2026/10/24 22:30:07 by syee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,10 @@ int main()
 		Weapon club = Weapon("crude spiked club");
 	
 		HumanB jim("Jim");
-		jim.setW
-		bob.attack();
+		jim.setWeapon(club);
+		jim.attack();
 		club.setType("some other type of club");
-		bob.attack();
+		jim.attack();
 	}
+	return (0);
 }

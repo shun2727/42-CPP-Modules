@@ -152,3 +152,18 @@ const &type
 
 20. ex093 relates, i didnt manage to assign an external object to a member variable
 - https://stackoverflow.com/questions/10280328/setting-a-member-variable-to-an-object-outside-the-class
+
+21. nonstatic memebr funcitons 
+- https://en.cppreference.com/cpp/language/member_functions
+
+22. ex04 related : file manipulaiton
+- https://www.geeksforgeeks.org/cpp/file-handling-c-classes/
+• fstream: Handles both reading and writing (defaults to ios::in | ios::out mode).
+• ifstream: Handles reading only (input file stream, defaults to ios::in).
+• ofstream: Handles writing only (output file stream, defaults to ios::out).
+
+declare a file
+use the file
+
+23. more on the fstream header 
+- https://cplusplus.com/reference/fstream/fstream/
