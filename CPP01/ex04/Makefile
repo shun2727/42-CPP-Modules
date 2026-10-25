@@ -2,7 +2,7 @@ CFLAGS = -Wall -Wextra -Werror -std=c++98
 CC = g++
 
 NAME = sedloser
-SRC = main.cpp
+SRC = main.cpp replaceString.cpp
 OBJ = $(SRC:.cpp=.o) ##this is just tellng it how th eobject files look like, it doesnt make it for them
 
 all : $(NAME)

@@ -167,3 +167,21 @@ use the file
 
 23. more on the fstream header 
 - https://cplusplus.com/reference/fstream/fstream/
+- https://www.w3schools.com/cpp/ref_fstream_fstream.asp
+
+24. more on getline 
+- https://www.geeksforgeeks.org/cpp/getline-string-c/
+
+25. creaitng a files
+- fstrema is a combination of reading and to wrtie to a file (ifstream, ofstream) , when creating a file, it has to be specified that it is writing to a file (std::ios::out)
+- ofstream is a 
+
+
+26. string manipulation for ex04
+- https://cplusplus.com/reference/string/string/
+
+27. appending words in c++
+- https://www.geeksforgeeks.org/cpp/stdstringappend-vs-stdstringpush_back-vs-operator-c/
+
+28. bypassing ofstream to now allow std::string
+- https://www.w3schools.com/cpp/cpp_strings_cstyle.asp
