@@ -185,3 +185,7 @@ use the file
 
 28. bypassing ofstream to now allow std::string
 - https://www.w3schools.com/cpp/cpp_strings_cstyle.asp
+
+
+29. using function pointers
+- https://www.geeksforgeeks.org/cpp/function-pointer-in-cpp/
