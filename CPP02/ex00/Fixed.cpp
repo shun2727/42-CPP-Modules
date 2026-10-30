@@ -6,7 +6,7 @@
 /*   By: syee <syee@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/27 18:00:23 by syee              #+#    #+#             */
-/*   Updated: 2026/10/29 13:15:01 by syee             ###   ########.fr       */
+/*   Updated: 2026/10/29 17:26:23 by syee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,15 @@ Fixed::Fixed() : m_fixed_point(0)
 	(shit i needed ai to help understand this...)
 	creates seperate object (but nothing is returned like damn look at the funtion)
 	Class a(b) <- here a isnt intilizaed yet 
+	
+	This receives reference(&) to prevent infinite recursion
+	
 */
-Fixed::Fixed(const Fixed& other) 
+Fixed::Fixed(const Fixed& other) //const here will accpet both const and non const
 {
 	std::cout << "Copy constructor called \n";
 
-	m_fixed_point = other.m_fixed_point; //this is trying to initialize the value with its own memoery
+	m_fixed_point = other.getRawBits(); //this is trying to initialize the value with its own memoery
 }
 
 /*
@@ -43,13 +46,12 @@ Fixed& Fixed::operator=(const Fixed& other)
 {
 	std::cout << "Copy assignment operator called \n";
 
-	if (this != &other) //guards against self assignment
+	if (this != &other) // if this is not equals to other then assign
 	{
-		//reassign it i guess?? i still dont know why i need to write it here 
-		// this->m_fixed_point = other.m_fixed_point; //im not sure why this works
+		//examples show delete here but it depends on whats called
+		m_fixed_point = other.getRawBits(); //private resticts access by class and not object
 	}
-	return (*this); //the this here is referting to the object on the left hand side 
-	//the lhs is the one being changed, this will become other and therefore 
+	return (*this); //this is mainy for chained assignments, it returns itself
 }
 
 Fixed::~Fixed() //desructor
@@ -72,6 +74,5 @@ int Fixed::getRawBits(void) const
 void Fixed::setRawBits(int const raw) 
 {
 	m_fixed_point = raw;
-	
 }
 	

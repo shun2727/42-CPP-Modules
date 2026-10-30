@@ -6,7 +6,7 @@
 /*   By: syee <syee@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/28 15:34:08 by syee              #+#    #+#             */
-/*   Updated: 2026/10/29 11:49:10 by syee             ###   ########.fr       */
+/*   Updated: 2026/10/29 17:27:07 by syee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ int main (void)
 {
 	
 
-	std::cout << "Expect default constructor for A: ";
+	//std::cout << "Expect default constructor for A: ";
 	Fixed a; //default constructor 
-	std::cout << "Expect default constructor for B (will default constructor be calle for this?): ";
+	//std::cout << "Expect default constructor for B (will default constructor be calle for this?): ";
 	Fixed b (a); //copy constructor is called here ()
-	std::cout << "Expect default constructor for C :";
+	//std::cout << "Expect default constructor for C :";
 	Fixed c;
 
 	c = b; //copy assignment operator to be called here (i think when this is done i should be using the getraw bits fuction )
@@ -35,11 +35,3 @@ int main (void)
 	
 	return 0;
 }
-
-/*
-getraebits isnt called 
-copyassignment isnt called (dependent)
-getreawbits member funciton isnt called 
-
-getrawbits memebr funciton isnt called before an existing one 
-*/

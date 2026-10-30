@@ -23,7 +23,7 @@ Copy constructorvs copt assignment operator are often mistaken for each ther but
 	
 	`~class`
 ## Orthodox canonical form 
-KNowledge regarding this is extracted from : https://hackmd.io/@ChloeIsCoding/S1D-y80bll
+KNowledge regarding this is extracted from : https://hackmd.io/@ChloeIsCoding/S1D-y80bll (it covers in dept about the copy constructor and operator copy)
 - default implementation provided by the compiler provides shallow copy
 
 ### shallow copy 
@@ -42,7 +42,7 @@ https://www.youtube.com/watch?v=ZMsrZvBmQnU <- demonstrates it
 The subject requires me to read up on integers and floating point numbers, in which it suggests integers and floating point numbers have different characteristics. I will be touching upon fixed-point numbers. 
 
 ### Fixed point numbers
-C++ has no fixed point numbers
+C++ has no fixed point numbers (i dont remember what is fixed opoint numbers)
 
 ### scalar types 
 performance accuary , range  precision..?
@@ -59,3 +59,5 @@ its placed in a getter funciton and its an indicaiton that it will not change th
 ### "what is static inside the class"
 - static means "Shared Class-Wide"
 - Inside the header file (.h), static tells the compiler: "This variable belongs to the class itself, not to individual objects." Every instance of the class shares this exact same variable. (obj a and obj b form class MyClass shares the same variable address)
+
+##
