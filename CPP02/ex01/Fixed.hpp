@@ -6,28 +6,28 @@
 /*   By: syee <syee@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/29 17:33:24 by syee              #+#    #+#             */
-/*   Updated: 2026/10/29 18:39:18 by syee             ###   ########.fr       */
+/*   Updated: 2026/10/31 22:01:29 by syee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 class Fixed
 {
 	private:
-		int m_fixed_pount;
+		int m_fixed_point;
 		static const int m_fractional_bits;
 		
 	public:
 		Fixed(); //constructor
-		Fixed(const int num);
-		Fixed(const float num);
 		Fixed(const Fixed &other); //copy constructor
 		Fixed &operator=(const Fixed &other); //operation copy constructor
 		~Fixed(); //destructor
+		int getRawBits(void) const;
+		void setRawBits(int const raw);
 		
-		float toFloat(void) const; //i forgot what the float behind is for
 		int toInt(void) const;
-		
-		//this is for bit shifting
-		void operator<<();
+		float toFloat(void) const; //i forgot what the float behind is for
+		Fixed(const int integer_num);
+		Fixed(const float float_num);
+		void operator<<(const Fixed &other);
 	
 };
