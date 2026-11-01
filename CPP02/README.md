@@ -155,3 +155,85 @@ int main(void)
 - floats have 4 bytes, the first is signed bit , 8 for exponents, 23 for mantisa bits (fractional bits)
 	- source : https://blog.demofox.org/2017/11/21/floating-point-precision/
 - fixed floating point, in this exercise, 8 for mantissa bits fractional bits, remaining 24 bits for exponent
+
+
+### Overloading <<
+- im not quite sure how to do it therefore i asked ai for this part 
+- initially my plan was :
+	```c++
+		void MyClass::operator<<()
+		{
+			//code
+		}
+	```
+	but it caused a compilation error
+- therefore i tried :
+	``` c++
+		std::ostream& operator<<(std::ostream& os , const Fixed& other)
+	```
+	- source1 :https://learn.microsoft.com/en-us/cpp/standard-library/overloading-the-output-operator-for-your-own-classes?view=msvc-170& 
+	- source 2 (chatgpt) :
+		```
+			Stream Insertion Operator (<<)
+
+			The << operator is used to insert data into an output stream, such as std::cout and std::ofstream.
+
+			1. Function Structure
+
+			std::ostream& operator<<(std::ostream& os, const Fixed& other);
+
+			The operator has two operands:
+
+			std::ostream& os: Left operand (output stream).
+
+			const Fixed& other: Right operand (object being printed).
+
+			Conceptually:
+
+			std::cout << fixedObj;
+
+			// Equivalent to:
+			operator<<(std::cout, fixedObj);
+
+			2. Why Non-Member and Friend?
+
+			The left operand belongs to std::ostream, not our custom class.
+
+			Therefore, we implement operator<< as a non-member function.
+
+			friend allows the function to access private and protected members without making it a class member.
+
+			class Fixed
+			{
+				public:
+					friend std::ostream& operator<<(std::ostream& os, const Fixed& other);
+			};
+
+			3. Why Return std::ostream&?
+
+			std::ostream& operator<<(std::ostream& os, const Fixed& other)
+			{
+				os << other.getRawBits();
+				return os;
+			}
+
+			Two reasons:
+
+			Operator chaining: Returning the stream allows multiple << operations, e.g. std::cout << fixedObj << std::endl.
+
+			Avoid copying: Streams are non-copyable, so returning a reference preserves the original stream.
+
+			4. Why std::ostream Instead of std::cout?
+
+			std::ostream is the general output stream interface. Both std::cout and std::ofstream can be passed as std::ostream&.
+
+			This allows the same overloaded operator to work with different output destinations.
+		```
+
+### friend in classes
+- trying to implement << overloading lead me to learn what friend does in c++
+- Friend functions and friend classes in C++ allow specific functions or classes to access the private and protected members of another class. 
+- https://www.w3schools.com/cpp/cpp_friend_function.asp
+
+### error
+- https://stackoverflow.com/questions/65407610/relocation-against-xxx-in-read-only-section-text-wrong-compiler-or-linux-se

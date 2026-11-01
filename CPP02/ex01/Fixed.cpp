@@ -6,15 +6,12 @@
 /*   By: syee <syee@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/29 17:29:57 by syee              #+#    #+#             */
-/*   Updated: 2026/10/31 23:55:35 by syee             ###   ########.fr       */
+/*   Updated: 2026/11/01 17:39:45 by syee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Fixed.hpp"
 #include <iostream>
-
-const int m_fractional_bits = 8;
-//have to be shifted by 8 bits? (one byte has 8 bits)
 
 Fixed::Fixed() : m_fixed_point(0)
 {
@@ -98,12 +95,9 @@ int Fixed::toInt(void) const
 /*
 	An overload of the insertion («) operator that inserts a floating-point representation
 	of the fixed-point number into the output stream object passed as a parameter.
-	
-
-	try to overload the << of the std
 */
-void std::operator<<(const Fixed& other) //the parameterhas to 
+std::ostream& operator<<(std::ostream& os , const Fixed& other) //the parameterhas to 
 {
-	//if it takes the floating point to a fixed point then whey is it only the whole numbers shown 
-	std::cout << other.getRawBits();
+	os << other.getRawBits();
+	return (os);
 }
