@@ -6,7 +6,7 @@
 /*   By: syee <syee@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/29 17:27:56 by syee              #+#    #+#             */
-/*   Updated: 2026/11/01 17:42:55 by syee             ###   ########.fr       */
+/*   Updated: 2026/11/01 21:21:38 by syee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,15 @@ int main (void)
 	
 	//all of these call << overloader to print in 
 	std::cout << "a is " << a << std::endl; 
-	// std::cout << "b is " << b << std::endl;
-	// std::cout << "c is " << c << std::endl;
-	// std::cout << "d is " << d << std::endl;
+	std::cout << "b is " << b << std::endl;
+	std::cout << "c is " << c << std::endl;
+	std::cout << "d is " << d << std::endl;
 	
 	
 	std::cout << "a is " << a.toInt() << " as integer" << std::endl;
-	// std::cout << "b is " << b.toInt() << " as integer" << std::endl;
-	// std::cout << "c is " << c.toInt() << " as integer" << std::endl;
-	// std::cout << "d is " << d.toInt() << " as integer" << std::endl;
+	std::cout << "b is " << b.toInt() << " as integer" << std::endl;
+	std::cout << "c is " << c.toInt() << " as integer" << std::endl;
+	std::cout << "d is " << d.toInt() << " as integer" << std::endl;
 	
 	return 0;
 }

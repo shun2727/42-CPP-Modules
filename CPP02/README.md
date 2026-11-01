@@ -123,22 +123,32 @@ int main(void)
 
 ### THE SHIT : Fixed point
 - https://www.geeksforgeeks.org/computer-organization-architecture/fixed-point-representation/
-- https://medium.com/@oumaimafisaoui/floating-and-fixed-point-representation-in-c-what-is-going-on-b71af54718a5 (MAIN article that helped to demistify this entire thng)
+- https://medium.com/@oumaimafisaoui/floating-and-fixed-point-representation-in-c-what-is-going-on-b71af54718a5 (MAIN article that helped to demistify this entire thng, BUT ITS WRONG)
+		To convert an integer number `Num` to a fixed-point number, multiply it by \(2^n\), or left-shift its bits by `n`, where `n` represents the number of fractional bits. (Think if want to move then `* 2^n` but if want to move back then `/ 2^n` cus, if `2^8 / 2^8 is 8 - 8`, secondary school maths )
 
-		To convert an integer number Num to a fixed point we multiply the number by 2^(n- 1) or we left shift the bits by (n - 1) where n is the fractional bits specified.
+		With the fractional bits equal to 8, we get:
 
-		With the fractional bits equal to 8 we get:
-
+		```text
 		Num.00000000
+		```
 
-		However, to convert fixed points values to an integer:
+		The scaling factor is:
 
-		We use the formula:
+		\[
+		2^8 = 256
+		\]
 
-		(float)fixed_point_number / (1 << 8)
-		or
-		(float)(fixed_point_number / 256)
+		To convert a fixed-point value back to an integer, divide it by the same scaling factor:
 
+		```cpp
+		(int)fixed_point_number / (1 << 8);
+		```
+
+		Or:
+
+		```cpp
+		fixed_point_number / 256;
+		```
 
 
 - https://www.youtube.com/watch?v=bbkcEiUjehk (another main thing)

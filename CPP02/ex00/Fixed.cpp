@@ -6,14 +6,13 @@
 /*   By: syee <syee@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/27 18:00:23 by syee              #+#    #+#             */
-/*   Updated: 2026/10/29 17:26:23 by syee             ###   ########.fr       */
+/*   Updated: 2026/11/01 21:17:45 by syee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Fixed.hpp"
 #include <iostream>
 
-static const int m_fractional_bits = 8;
 /*
 	theres fractional value and fied point bits and im not sure which is which
 */

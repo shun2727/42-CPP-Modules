@@ -6,16 +6,18 @@
 /*   By: syee <syee@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/29 17:29:57 by syee              #+#    #+#             */
-/*   Updated: 2026/11/01 17:39:45 by syee             ###   ########.fr       */
+/*   Updated: 2026/11/01 21:20:57 by syee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Fixed.hpp"
 #include <iostream>
+#include <iomanip>
+#include <cmath>
 
 Fixed::Fixed() : m_fixed_point(0)
 {
-	
+	std::cout << "Default constructor called \n";
 }
 /*
 	copy constructor, also copies the values but does not return anything
@@ -29,12 +31,12 @@ Fixed::Fixed(const Fixed &other)
 
 int Fixed::getRawBits(void) const
 {
-	//std::cout << "getRawBits member function called \n";
 	return (m_fixed_point);
 }
 
 Fixed& Fixed::operator=(const Fixed &other)
 {
+	std::cout << "Copy assignment operator called \n";
 	if (this != &other)
 	{
 		m_fixed_point = other.getRawBits();
@@ -61,27 +63,25 @@ Fixed::~Fixed()
 */
 Fixed::Fixed(const int integer_num)  //int to fixed float
 {
-	m_fixed_point = integer_num << (m_fractional_bits - 1);
+	std::cout << "Int constructor called \n";
+	m_fixed_point = integer_num << (m_fractional_bits);
+	
+}
+
+
+Fixed::Fixed(const float float_num) //float to fixed float (so move the decimal point to the right)
+{
+	std::cout << "Float constructor called \n";
+	m_fixed_point = roundf(float_num * (1 << m_fractional_bits));
+
 }
 
 /*
-	It converts float to the corresponding fixed-point value
-	current fixed point :  00000000 00000000 00000000(exponent) . 00000000(mantisa)
-											^ (need to convert to)
-	floats : 0 (signed) 00000000 (exponent) . 00000000 00000000 0000000 (mantisa)
-	
-*/
-Fixed::Fixed(const float float_num) //float to fixed float (so move the decimal point to the right)
-{
-	m_fixed_point = (int)float_num / (15 - 1); //ot sure but its assuming it since int to fixed /8 , this will add ontop of the 8 b
-}
-//it should be int to fixed point to float
-/*
-	converts fixed_point value to float
+	converts fixed_point value to float, assuming all values passed in is fixed point
 */
 float Fixed::toFloat(void) const //it will not change the values that were taken from the getter
 {
-	return (getRawBits() << 15);
+	return ((float)getRawBits() / (1 << m_fractional_bits));
 } 
 
 /*
@@ -89,7 +89,7 @@ float Fixed::toFloat(void) const //it will not change the values that were taken
 */
 int Fixed::toInt(void) const 
 {
-	return (getRawBits() / (1 << 8)); //1 << 8 is just 256 due to 1 00000000
+	return (getRawBits() / (1 << m_fractional_bits)); //1 << 8 is just 256 due to 1 00000000
 }
 
 /*
@@ -98,6 +98,6 @@ int Fixed::toInt(void) const
 */
 std::ostream& operator<<(std::ostream& os , const Fixed& other) //the parameterhas to 
 {
-	os << other.getRawBits();
+	os << other.toFloat();
 	return (os);
 }
