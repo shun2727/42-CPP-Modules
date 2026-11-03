@@ -51,7 +51,10 @@ https://www.youtube.com/watch?v=ZMsrZvBmQnU <- demonstrates it
 ```
 	int getRawBits(void) const; 
 ```
-- its placed in a getter funciton and its an indicaiton that it will not change the values that were gotten from the getter 
+- https://stackoverflow.com/questions/9790927/what-does-const-behind-a-function-header-mean
+- Trailing const means the member function does not modify the object it’s called on, and it can be called on const objects.
+- It’s not about the returned value. It’s about *this.
+- Getters should be const because reading a value shouldn’t change the object.
 
 ### "Why can't i assign a default value for static const int using member initilization?"
 - In C++, you usually cannot initialize a static const int inside the class body because static variables require a single, distinct memory location across your entire program. The class header only serves as a blueprint, not a physical location in memory.
@@ -153,13 +156,6 @@ int main(void)
 
 - https://www.youtube.com/watch?v=bbkcEiUjehk (another main thing)
 
-### precision and accuracy
-- 
-### Ways negtive values are represented
-- 
-
-### Method carried out to convert the vlaue
-
 ### intigers, fixed floating point, floats
 - ints have 4 bytes, 8 bits depending on (1' complement , 2's complement and ..) the bits are represeted differently
 - floats have 4 bytes, the first is signed bit , 8 for exponents, 23 for mantisa bits (fractional bits)
@@ -245,5 +241,93 @@ int main(void)
 - Friend functions and friend classes in C++ allow specific functions or classes to access the private and protected members of another class. 
 - https://www.w3schools.com/cpp/cpp_friend_function.asp
 
-### error
-- https://stackoverflow.com/questions/65407610/relocation-against-xxx-in-read-only-section-text-wrong-compiler-or-linux-se
+### ex01 research TLDR...
+- tldr what i found out about myself from doing this exercise was :
+	- i dig too deep without trying the bsic stuff first (kept trying to understand how float & fixed-float can be stored into an int value without error) 
+		- i think how store
+		- look at fixed and fractional bits
+		- still dont understand how its stored
+		- finds out formula to change fixed to int and int to fix
+		- does not verify if that works
+		- tries to forcefully use my logic of mantissa bits = fracitonal bits and use this logic to shift the bits
+		- asks ai about the error
+		- tells me to reflect and test
+		- found out my concept is wrong
+		- program works but still dont understand why 8 bits 
+
+## ex02 related:
+- overloading overload, it requires us to overload a total of (oh my days)
+
+### Friend function
+- https://www.geeksforgeeks.org/cpp/friend-class-function-cpp/
+
+### what is a static member function
+- A static member function is a function that belongs to the class rather than any specified object it can be called without creating/using an object.
+
+- it is shared among all objects of the class
+Example :
+```c++
+	Class MyClass
+	{
+		public :
+			static int addition(int a, int b)
+			{
+				return (a+b);
+			}
+	};
+	
+	int main()
+	{
+		int y = MyClass::addition(10, 12)
+	}
+```
+
+- The access specifier is not limited to public, if it is a private static function it can be called from another member function. I suppose itsmainly used as an utility fnction within thecalss 
+```c++
+	class MyClass
+	{
+	private:
+	    static void helper()
+	    {
+		std::cout << "Hello\n";
+	    }
+
+	public:
+	    static void execute()
+	    {
+		helper(); // Allowed!
+	    }
+	};
+```
+
+### overloading operators
+- https://www.codecademy.com/learn/learn-advanced-c-plus-plus/modules/operator-overloading-in-c-plus-plus/cheatsheet (main help)
+- https://www.geeksforgeeks.org/cpp/operator-overloading-cpp/ (basic help)
+
+Main reference : 
+- https://en.cppreference.com/cpp/language/operators (resource ot back my interpretation)
+![cpp reference image](image.png)
+
+
+### Found errors 
+- Doing `Fixed operator+(Fixed& that);` yeilded the error:
+```bash
+	main.cpp:19:41: error: cannot bind non-const lvalue reference of type ‘Fixed&’ to an rvalue of type ‘Fixed’
+   19 |         Fixed const b( Fixed( 5.05f ) * Fixed( 2 ) );
+      |                                         ^~~~~~~~~~
+	In file included from main.cpp:13:
+	Fixed.hpp:53:40: note: initializing argument 1 of ‘Fixed Fixed::operator*(Fixed&)’
+	53 |                 Fixed operator*(Fixed& that);
+		|                                 ~~~~~~~^~~~
+	make: *** [<builtin>: main.o] Error 1
+```
+- But `Fixed operator+(const Fixed& that) const;` helped fix it
+- Because Fixed( 2 ) is a temporary (an rvalue), and a non-const lvalue reference (Fixed&) can’t bind to a temporary, whereas const Fixed& can. Adding const also promises that that won’t be modified, which is what allows the compiler to accept the temporary without copying it.
+- const after it protects a, const inside protects b
+
+### lvalues and rvalues 
+- https://en.cppreference.com/cpp/language/value_category
+
+
+### static functions
+- 

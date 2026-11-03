@@ -6,7 +6,7 @@
 /*   By: syee <syee@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/29 17:33:24 by syee              #+#    #+#             */
-/*   Updated: 2026/11/01 17:39:32 by syee             ###   ########.fr       */
+/*   Updated: 2026/11/01 21:34:36 by syee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,18 @@ class Fixed
 		static const int m_fractional_bits = 8;
 		
 	public:
-		Fixed(); //constructor
-		Fixed(const Fixed &other); //copy constructor
-		Fixed &operator=(const Fixed &other); //operation copy constructor
-		~Fixed(); //destructor
+		Fixed();
+		Fixed(const Fixed &other);
+		Fixed &operator=(const Fixed &other);
+		~Fixed();
 		int getRawBits(void) const;
 		void setRawBits(int const raw);
 		
+		//ex01
 		int toInt(void) const;
-		float toFloat(void) const; //i forgot what the float behind is for
+		float toFloat(void) const;
 		Fixed(const int integer_num);
 		Fixed(const float float_num);
-		//void operator<<(const Fixed &other);
-		friend std::ostream& operator<<(std::ostream& os , const Fixed& other);
 	
+		friend std::ostream& operator<<(std::ostream& os , const Fixed& other);	
 };

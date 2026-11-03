@@ -6,7 +6,7 @@
 /*   By: syee <syee@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/29 17:29:57 by syee              #+#    #+#             */
-/*   Updated: 2026/11/01 21:20:57 by syee             ###   ########.fr       */
+/*   Updated: 2026/11/02 18:14:27 by syee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,3 +101,4 @@ std::ostream& operator<<(std::ostream& os , const Fixed& other) //the parameterh
 	os << other.toFloat();
 	return (os);
 }
+
