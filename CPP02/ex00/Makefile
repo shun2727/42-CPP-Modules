@@ -1,5 +1,5 @@
 CFLAGS = -Wall -Wextra -Werror -std=c++98
-CC = g++
+CC = c++
 
 NAME = OCM
 SRC = main.cpp Fixed.cpp

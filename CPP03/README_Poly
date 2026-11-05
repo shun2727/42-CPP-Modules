@@ -1,0 +1,656 @@
+# C++: Inheritance, Overriding & Runtime Polymorphism
+
+## 1. Inheritance
+
+Inheritance allows a derived (child) class to acquire members and functionality from a base (parent) class.
+
+Example:
+
+```cpp
+class Animal {
+public:
+    void eat() {
+        cout << "Eating\n";
+    }
+};
+
+class Dog : public Animal {
+public:
+    void bark() {
+        cout << "Barking\n";
+    }
+};
+```
+
+Key points:
+
+- `Dog` inherits the accessible public and protected members of `Animal`.
+- A `Dog` object can access both inherited `Animal` members and its own `Dog` members.
+- An `Animal` object cannot directly access `Dog`-specific members.
+- A derived-class object remains an object of its own type. Inheritance does not turn it into a base-class object.
+- Private members of the base class are inherited as part of the base subobject but cannot be accessed directly by the derived class.
+
+IMPORTANT:
+
+- A Dog IS an Animal.
+- An Animal IS NOT necessarily a Dog.
+
+This relationship allows UPCASTING.
+
+### Upcasting
+
+Upcasting means assigning a derived-class object to a base-class pointer or reference.
+
+```cpp
+Dog myDog;
+
+Animal* animal = &myDog;   // Valid
+Animal& animalRef = myDog; // Valid
+```
+
+Why is this allowed?
+
+- A Dog object contains an inherited Animal portion (base-class subobject).
+- The pointer/reference can refer to the Animal portion of the Dog object.
+- The actual object remains a Dog.
+- No new Animal object is created.
+
+IMPORTANT DISTINCTION:
+
+```cpp
+Animal animal = Dog();     // Object slicing
+Animal* animal = &myDog;   // Upcasting
+```
+
+Object slicing:
+- Creates an actual Animal object.
+- Copies only the Animal portion of the Dog object.
+- Dog-specific members are discarded from the resulting Animal object.
+
+Upcasting:
+- Does not create another object.
+- The pointer/reference simply refers to the existing Dog object.
+- The actual object retains all its Dog-specific members.
+
+### What can a Base-Class Pointer Access?
+
+```cpp
+Dog myDog;
+
+Animal* animal = &myDog;
+
+animal->eat();  // VALID
+animal->bark(); // ERROR
+```
+
+Why?
+
+- The pointer is declared as `Animal*`.
+- C++ only allows access to members available through the Animal interface.
+- Although the actual object is a Dog, the pointer does not expose Dog-specific functionality.
+
+IMPORTANT:
+
+A base-class pointer can point to a derived-class object, but it does not automatically gain access to the derived class's additional members.
+
+---
+
+## 2. Function Hiding vs Function Overriding
+
+These two concepts can look identical but behave differently.
+
+### A. Function Hiding (Without virtual)
+
+```cpp
+class Animal {
+public:
+    void makeSound() {
+        cout << "Animal sound\n";
+    }
+};
+
+class Dog : public Animal {
+public:
+    void makeSound() {
+        cout << "Bark\n";
+    }
+};
+```
+
+Here:
+
+- Both classes have a function with the same name.
+- The derived-class function hides the base-class function.
+- This is NOT technically overriding because the base function isn't virtual.
+- Both functions are separate non-virtual functions.
+
+You can still explicitly access the base-class function:
+
+```cpp
+Dog myDog;
+
+myDog.makeSound();          // Bark
+myDog.Animal::makeSound();  // Animal sound
+```
+
+### B. Function Overriding (With virtual)
+
+```cpp
+class Animal {
+public:
+    virtual void makeSound() {
+        cout << "Animal sound\n";
+    }
+};
+
+class Dog : public Animal {
+public:
+    void makeSound() override {
+        cout << "Bark\n";
+    }
+};
+```
+
+Here:
+
+- `Animal::makeSound()` is declared virtual.
+- `Dog::makeSound()` provides a different implementation.
+- This is FUNCTION OVERRIDING.
+
+IMPORTANT:
+
+- Overriding requires the base-class function to be virtual.
+- The `override` keyword is optional but strongly recommended.
+- `override` tells the compiler to verify that the derived function actually overrides an inherited virtual function.
+- If the base function isn't virtual, using `override` produces a compilation error.
+
+### What Happens If override Is Used Without virtual?
+
+INVALID:
+
+```cpp
+class Animal {
+public:
+    void makeSound() {
+        cout << "Animal sound\n";
+    }
+};
+
+class Dog : public Animal {
+public:
+    void makeSound() override { // COMPILATION ERROR
+        cout << "Bark\n";
+    }
+};
+```
+
+Why?
+
+- `Animal::makeSound()` isn't virtual.
+- Therefore, `Dog::makeSound()` cannot override it.
+- `override` cannot magically turn a non-virtual function into a virtual function.
+
+If you remove `override`, the code compiles, but it becomes function hiding instead.
+
+### Quick Comparison
+
+| Base Function | Derived Function | Result |
+|---|---|---|
+| `virtual` | `override` | Valid overriding |
+| `virtual` | No `override` | Valid overriding |
+| No `virtual` | `override` | Compilation error |
+| No `virtual` | No `override` | Function hiding |
+
+---
+
+## 3. The virtual Keyword
+
+`virtual` has two important purposes:
+
+1. Declares a member function as virtual, allowing derived classes to override it.
+2. Enables runtime polymorphism (dynamic dispatch), allowing C++ to select the appropriate function implementation based on the actual object type.
+
+### Without virtual (Static Binding)
+
+```cpp
+class Animal {
+public:
+    void makeSound() {
+        cout << "Animal sound\n";
+    }
+};
+
+class Dog : public Animal {
+public:
+    void makeSound() {
+        cout << "Bark\n";
+    }
+};
+
+int main() {
+    Animal* animal = new Dog();
+
+    animal->makeSound();
+
+    delete animal;
+}
+```
+
+Output:
+
+```text
+Animal sound
+```
+
+Why?
+
+Without `virtual`, C++ uses the pointer/reference's declared type to determine which function to call when accessing the function through that pointer/reference.
+
+In this case:
+
+- Pointer type: `Animal*`
+- Actual object type: `Dog`
+- Function called: `Animal::makeSound()`
+
+This is called STATIC BINDING (early binding).
+
+IMPORTANT:
+
+Without virtual, the base function does not ALWAYS run.
+
+For example:
+
+```cpp
+Dog myDog;
+myDog.makeSound();
+```
+
+Output:
+
+```text
+Bark
+```
+
+Because the object itself is a Dog, C++ calls the Dog function.
+
+The base function is selected in the earlier example because the function is called through an Animal pointer.
+
+### With virtual (Dynamic Binding)
+
+```cpp
+class Animal {
+public:
+    virtual void makeSound() {
+        cout << "Animal sound\n";
+    }
+};
+
+class Dog : public Animal {
+public:
+    void makeSound() override {
+        cout << "Bark\n";
+    }
+};
+
+int main() {
+    Animal* animal = new Dog();
+
+    animal->makeSound();
+
+    delete animal;
+}
+```
+
+Output:
+
+```text
+Bark
+```
+
+Why?
+
+With `virtual`, C++ uses the actual object's type to determine which overridden function implementation to execute.
+
+In this case:
+
+- Pointer type: `Animal*`
+- Actual object type: `Dog`
+- Function called: `Dog::makeSound()`
+
+This is called DYNAMIC BINDING (late binding).
+
+IMPORTANT:
+
+- `virtual` only needs to be declared once in the inheritance chain.
+- Derived classes do not need to repeat `virtual`.
+- Derived classes can use `override` to verify their implementation.
+- Once a function is virtual, it remains virtual throughout the inheritance chain.
+
+---
+
+## 4. What Does override Actually Do?
+
+`override` is a C++11 feature.
+
+It tells the compiler:
+
+"I intend for this function to override an inherited virtual function. Please verify that I'm doing it correctly."
+
+Example:
+
+```cpp
+class Animal {
+public:
+    virtual void makeSound() {
+        cout << "Animal sound\n";
+    }
+};
+
+class Dog : public Animal {
+public:
+    void makeSound() override {
+        cout << "Bark\n";
+    }
+};
+```
+
+What happens if you make a spelling mistake?
+
+```cpp
+class Dog : public Animal {
+public:
+    void makeSoud() override {
+        cout << "Bark\n";
+    }
+};
+```
+
+Compilation error!
+
+Why?
+
+- `makeSoud()` does not match an inherited virtual function.
+- The compiler catches the mistake because of `override`.
+
+Without `override`, the compiler would simply treat `makeSoud()` as another function rather than an overriding function.
+
+IMPORTANT:
+
+`override`:
+- Does NOT enable polymorphism by itself.
+- Does NOT replace the base class.
+- Does NOT replace inherited member variables.
+- Does NOT require you to redefine every function in the base class.
+- Only verifies that the function correctly overrides an inherited virtual function.
+
+---
+
+## 5. Does Overriding Replace the Entire Base Class?
+
+NO!
+
+Overriding only replaces the implementation of the particular virtual function.
+
+It does NOT replace the entire base class or remove its inherited members.
+
+Example:
+
+```cpp
+class Animal {
+public:
+    int age = 5;
+    int weight = 20;
+    int height = 50;
+    int speed = 10;
+    int energy = 100;
+
+    virtual void display() {
+        cout << age << endl;
+        cout << weight << endl;
+        cout << height << endl;
+        cout << speed << endl;
+        cout << energy << endl;
+    }
+};
+
+class Dog : public Animal {
+public:
+    void display() override {
+        age = 10;
+        weight = 30;
+        height = 60;
+
+        cout << age << endl;
+        cout << weight << endl;
+        cout << height << endl;
+    }
+};
+```
+
+When calling:
+
+```cpp
+Dog myDog;
+myDog.display();
+```
+
+Output:
+
+```text
+10
+30
+60
+```
+
+What happened to speed and energy?
+
+They still exist!
+
+```cpp
+cout << myDog.speed;  // 10
+cout << myDog.energy; // 100
+```
+
+Why?
+
+- The Dog object still contains all five inherited variables.
+- Overriding only changes the behaviour of `display()`.
+- The new implementation simply chooses not to print speed and energy.
+
+IMPORTANT:
+
+Overriding replaces FUNCTION BEHAVIOUR, not inherited DATA MEMBERS.
+
+---
+
+## 6. Runtime Polymorphism
+
+Polymorphism means "many forms".
+
+Runtime polymorphism allows the same interface to produce different behaviours depending on the actual object type.
+
+Example:
+
+```cpp
+class Animal {
+public:
+    virtual void makeSound() {
+        cout << "Animal sound\n";
+    }
+};
+
+class Dog : public Animal {
+public:
+    void makeSound() override {
+        cout << "Bark\n";
+    }
+};
+
+class Cat : public Animal {
+public:
+    void makeSound() override {
+        cout << "Meow\n";
+    }
+};
+
+int main() {
+    Dog dog;
+    Cat cat;
+
+    Animal* animals[2];
+
+    animals[0] = &dog;
+    animals[1] = &cat;
+
+    animals[0]->makeSound();
+    animals[1]->makeSound();
+}
+```
+
+Output:
+
+```text
+Bark
+Meow
+```
+
+What's happening?
+
+1. Both Dog and Cat inherit from Animal.
+2. Both override the virtual function `makeSound()`.
+3. We store their addresses using Animal pointers.
+4. We call the same function through the same interface.
+5. C++ executes the appropriate implementation based on the actual object type.
+
+This is RUNTIME POLYMORPHISM.
+
+The advantage is that we don't need to know whether we're dealing with a Dog, Cat or another Animal.
+
+We can interact with different objects through a common base-class interface.
+
+IMPORTANT:
+
+Overriding and polymorphism are NOT the same thing.
+
+- Overriding = Derived classes provide their own implementation of an inherited virtual function.
+- Polymorphism = Allows different derived objects to exhibit different behaviours through a common interface.
+
+Overriding provides the different implementations, while runtime polymorphism allows the appropriate implementation to be selected through a base-class pointer or reference.
+
+---
+
+## 7. Compilation vs Runtime (IMPORTANT DISTINCTION)
+
+`virtual` DOES NOT mean that classes or functions are compiled during runtime.
+
+Compilation and runtime are two completely different stages.
+
+### Compilation
+
+Compilation happens BEFORE the program executes.
+
+During compilation:
+
+- C++ source code is converted into machine code.
+- Classes and their functions are compiled.
+- The compiler checks whether overriding is valid.
+- The compiler prepares the necessary mechanisms for virtual function dispatch.
+
+### Runtime
+
+Runtime happens WHEN the compiled program is executing.
+
+During runtime:
+
+- Objects are created.
+- Pointers and references interact with objects.
+- When a virtual function is called, C++ determines which implementation to execute based on the actual object's type.
+
+Example:
+
+```cpp
+Animal* animal = new Dog();
+
+animal->makeSound();
+```
+
+The Dog class was already compiled before the program started executing.
+
+At runtime:
+
+1. `new Dog()` creates a Dog object.
+2. `animal` points to that Dog object.
+3. `makeSound()` is called.
+4. Because the function is virtual, the Dog implementation is selected.
+
+IMPORTANT:
+
+`virtual` enables FUNCTION SELECTION at runtime, NOT COMPILATION at runtime.
+
+The compiler generates the necessary code beforehand. Runtime polymorphism determines which already-compiled implementation gets executed.
+
+---
+
+## 8. Quick Revision Table
+
+| Concept | Purpose |
+|---|---|
+| Inheritance | Allows a derived class to acquire members and functionality from a base class. |
+| Function Hiding | A derived class declares a function with the same name as a non-virtual base function. |
+| Function Overriding | A derived class provides a new implementation of an inherited virtual function. |
+| `virtual` | Declares a function as virtual, allowing overriding and runtime polymorphic dispatch. |
+| `override` | Verifies that a derived function correctly overrides an inherited virtual function. |
+| Upcasting | Allows a base-class pointer/reference to refer to a derived-class object. |
+| Object Slicing | Copies the base-class portion of a derived object into a separate base-class object. |
+| Static Binding | Function selection based on the declared type when calling a non-virtual function through a pointer/reference. |
+| Dynamic Binding | Function selection based on the actual object's type when calling a virtual function through a pointer/reference. |
+| Runtime Polymorphism | Allows different derived objects to execute different implementations through a common interface. |
+| Compilation | Converts source code into machine code before execution. |
+| Runtime | The period when the compiled program is executing. |
+
+---
+
+## 9. The Relationship Between Everything
+
+Think of the concepts as a sequence:
+
+```text
+INHERITANCE
+    |
+    v
+Derived classes inherit from a base class.
+    |
+    v
+VIRTUAL FUNCTION
+    |
+    v
+Establishes a function as overridable.
+    |
+    v
+FUNCTION OVERRIDING
+    |
+    v
+Derived classes provide their own implementations.
+    |
+    v
+UPCASTING
+    |
+    v
+Base-class pointers/references can refer to
+different derived-class objects.
+    |
+    v
+RUNTIME POLYMORPHISM
+    |
+    v
+The appropriate overridden function is selected
+based on the actual object type at runtime.
+```
+
+### The Three Most Important Things to Remember
+
+1. `virtual` establishes a polymorphic function in the base class and enables dynamic dispatch.
+2. `override` verifies that the derived class correctly overrides that function.
+3. Runtime polymorphism allows a base-class pointer/reference to call the appropriate derived-class implementation.
+
+If you understand these three relationships, you've understood the foundation of runtime polymorphism in C++.
