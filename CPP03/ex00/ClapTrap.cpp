@@ -6,7 +6,7 @@
 /*   By: syee <syee@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:49:06 by syee              #+#    #+#             */
-/*   Updated: 2026/11/05 15:49:06 by syee             ###   ########.fr       */
+/*   Updated: 2026/11/06 14:55:03 by syee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,12 @@ void ClapTrap::attack(const std::string& target)
 {
 	if (m_hit_points <= 0)
 	{
-		std::cout << "ClapTrap " << m_name << " is down and cannot attack \n";	
+		std::cout <<  m_name << " is down and cannot attack \n";	
 		return ;
 	}
 	else if (m_energy_points <= 0)
 	{
-		std::cout << "ClapTrap " << m_name << " ran out of energy points and cannot attack \n";	
+		std::cout << m_name << " ran out of energy points and cannot attack \n";	
 		return ;
 	}	
 	else
@@ -98,21 +98,21 @@ void ClapTrap::takeDamage(unsigned int amount)
 	else	
 		m_hit_points -= amount;
 
-	std::cout << "ClapTrap " << m_name << " loses " << amount << " hit points , it has " << m_hit_points << " points left \n";
+	std::cout << m_name << " loses " << amount << " hit points , it has " << m_hit_points << " points left \n";
 }
 
 void ClapTrap::beRepaired(unsigned int amount)
 {
 	if (m_energy_points < 0 || m_energy_points < amount )
 	{
-		std::cout << "ClapTrap " << m_name << " does not have enough energy points and cannot be repaired \n";	
+		std::cout << m_name << " does not have enough energy points and cannot be repaired \n";	
 		return;
 	}
 	else 
 	{
 		m_hit_points += amount;
-		m_energy_points -= 1;
-		std::cout << "ClapTrap " << m_name << " repairs itself and now has " << m_hit_points << " hit points , it has " << m_energy_points << " energy left \n";
+		m_energy_points -= amount;
+		std::cout << m_name << " repairs itself and now has " << m_hit_points << " hit points , it has " << m_energy_points << " energy left \n";
 	}
 
 }

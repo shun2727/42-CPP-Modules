@@ -6,7 +6,7 @@
 /*   By: syee <syee@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 16:01:12 by syee              #+#    #+#             */
-/*   Updated: 2026/11/05 22:06:56 by syee             ###   ########.fr       */
+/*   Updated: 2026/11/06 15:36:15 by syee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,36 @@ ScavTrap& ScavTrap::operator=(const ScavTrap& other)
     if (this != &other)
     {
         ClapTrap::operator=(other); // Assign the inherited members
-        m_guard_gate = other.m_guard_gate; // Assign ScavTrap's own member
     }
     return *this;
 }
+
+
+/*
+	For takeDamage and beRepaired : 
+	When a derived class inherits a base class and doesn't provide its own
+	implementation of an inherited function, calling that function
+	through the derived object will use the base class's implementation.
+*/
+
+void ScavTrap::attack(const std::string& target)
+{
+	if (m_hit_points <= 0 || m_energy_points <= 0)
+	{
+		ClapTrap::attack(target);
+		return ;
+	}
+	else
+	{
+		m_energy_points--;
+		std::cout << "ScavTrap " << m_name << " attacks " << target << ", causing " << m_attack_damage <<" points of damage!, it has " << m_energy_points << " energy left \n";
+	}
+}
+
+void ScavTrap::guardGate()
+{
+	std::cout << "ScavTrap " << m_name <<" is in gatekeeper mode\n";
+}
+
+
+
