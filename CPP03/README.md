@@ -10,7 +10,7 @@ _This project has been created as part of the 42 curriculum by syee for CPP03, i
 	- constructor
 	- destructor
 
-## ex01 related 
+## ex01 && ex02 related (they are similar in nature)
 
 ### Inheritance
 - access specifiers
@@ -34,3 +34,5 @@ _This project has been created as part of the 42 curriculum by syee for CPP03, i
 
 ### Chaining
 - when trying to do the orthodox canonical form constructurs, parameterized constructors and destructors will be called. (but for parameterized if you dont specify which parametrized constructor it will just call the default constructor)
+
+## ex03

@@ -6,7 +6,7 @@
 /*   By: syee <syee@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 16:01:12 by syee              #+#    #+#             */
-/*   Updated: 2026/11/06 15:36:15 by syee             ###   ########.fr       */
+/*   Updated: 2026/11/06 19:29:32 by syee             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,12 @@ ScavTrap& ScavTrap::operator=(const ScavTrap& other)
     return *this;
 }
 
+ScavTrap::ScavTrap(const ScavTrap& other) : ClapTrap::ClapTrap(other)
+{
+	this->m_hit_points = 100;
+	this->m_energy_points = 50; 
+	this->m_attack_damage = 20; 
+}
 
 /*
 	For takeDamage and beRepaired : 
